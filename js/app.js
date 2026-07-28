@@ -1,6 +1,33 @@
 const container = document.getElementById("dishes");
 const refreshButton = document.getElementById("refreshButton");
 const sendButton = document.getElementById("sendButton");
+function showToast(message) {
+
+    let toast = document.querySelector(".toast");
+
+    if (!toast) {
+
+        toast = document.createElement("div");
+
+        toast.className = "toast";
+
+        document.body.appendChild(toast);
+
+    }
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toast.hideTimer);
+
+    toast.hideTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2500);
+
+}
 
 
 
@@ -129,19 +156,19 @@ cookButton.addEventListener("click", async () => {
 
         if (result.success) {
 
-            alert("❤️ Рецепт успешно отправлен в Telegram!");
+    showToast("❤️ Рецепт успешно отправлен в Telegram!");
 
-        } else {
+} else {
 
-            alert("Не удалось отправить сообщение.");
+    showToast("Не удалось отправить сообщение.");
 
-        }
+}
 
     } catch (error) {
 
         console.error(error);
 
-        alert("Ошибка подключения к серверу.");
+        showToast("Ошибка подключения к серверу.");
 
     }
 
