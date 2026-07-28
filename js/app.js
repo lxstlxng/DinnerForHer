@@ -2,11 +2,6 @@ const container = document.getElementById("dishes");
 const refreshButton = document.getElementById("refreshButton");
 const sendButton = document.getElementById("sendButton");
 
-button:disabled{
-    opacity:.45;
-    cursor:not-allowed;
-    transform:none;
-}
 
 let selectedDish = null;
 
