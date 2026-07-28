@@ -3,7 +3,6 @@ const refreshButton = document.getElementById("refreshButton");
 const sendButton = document.getElementById("sendButton");
 
 
-let selectedDish = null;
 
 function renderDishes() {
 
@@ -48,8 +47,15 @@ function renderDishes() {
                 </div>
 
                 <div class="card-back">
+               
 
-                    <h2>${dish.name}</h2>
+    <button class="back-btn">
+        ← Назад
+    </button>
+
+    <h2>${dish.name}</h2>
+
+                   
 
                     <div class="section-title">
                         🛒 Ингредиенты
@@ -95,44 +101,19 @@ function renderDishes() {
 
 const viewButton = card.querySelector(".view-btn");
 const cookButton = card.querySelector(".cook-btn");
+const backButton = card.querySelector(".back-btn");
 
 viewButton.addEventListener("click", () => {
+backButton.addEventListener("click", () => {
+
+    card.classList.remove("flipped");
+
+});
 
     card.classList.add("flipped");
 
 });
-
-cookButton.addEventListener("click", () => {
-
-    document.querySelectorAll(".dish-card").forEach(c => {
-
-        c.classList.remove("selected");
-
-    });
-
-    card.classList.add("selected");
-
-    selectedDish = dish;
-
-    sendButton.disabled = false;
-
-    sendButton.textContent = "❤️ Отправить выбор";
-
-});
-
-container.appendChild(card);
-    });
-
-}
-refreshButton.addEventListener("click", renderDishes);
-
-renderDishes();
-
-sendButton.addEventListener("click", async () => {
-
-    if (!selectedDish) {
-        return;
-    }
+cookButton.addEventListener("click", async () => {
 
     try {
 
@@ -141,14 +122,14 @@ sendButton.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(selectedDish)
+            body: JSON.stringify(dish)
         });
 
         const result = await response.json();
 
         if (result.success) {
 
-            alert("❤️ Выбор успешно отправлен в Telegram!");
+            alert("❤️ Рецепт успешно отправлен в Telegram!");
 
         } else {
 
@@ -165,3 +146,12 @@ sendButton.addEventListener("click", async () => {
     }
 
 });
+
+container.appendChild(card);
+    });
+
+}
+refreshButton.addEventListener("click", renderDishes);
+
+renderDishes();
+
