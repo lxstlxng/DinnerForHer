@@ -11,35 +11,103 @@ function renderDishes() {
 
     const randomDishes = getRandomDishes(8);
 
-    randomDishes.forEach(dish => {
+    randomDishes.forEach((dish, index) => {
 
         const card = document.createElement("div");
 
         card.className = "dish-card";
-        card.style.animationDelay = `${container.children.length * 0.08}s`;
+
+        card.style.animationDelay = `${index * 0.08}s`;
 
         card.innerHTML = `
-            <img src="${dish.image}" alt="${dish.name}">
 
-            <div class="dish-content">
-                <h2>${dish.name}</h2>
+            <div class="card-inner">
 
-                <p>⏱ ${dish.time} мин.</p>
+                <div class="card-front">
 
-                <p>${dish.ingredients.join(", ")}</p>
+                    <img src="${dish.image}" alt="${dish.name}">
 
-                <button class="choose-btn">
-                    ❤️ Выбрать
-                </button>
+                    <div class="card-info">
+
+                        <div>
+
+                            <h2>${dish.name}</h2>
+
+                            <p class="time">
+                                ⏱ ${dish.time} минут
+                            </p>
+
+                        </div>
+
+                        <button class="view-btn">
+                            Посмотреть рецепт
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="card-back">
+
+                    <h2>${dish.name}</h2>
+
+                    <div class="section-title">
+                        🛒 Ингредиенты
+                    </div>
+
+                    <ul class="ingredients">
+
+                        ${dish.ingredients
+                            .map(item => `<li>• ${item}</li>`)
+                            .join("")}
+
+                    </ul>
+
+                    <div class="section-title">
+
+                        👨‍🍳 Приготовление
+
+                    </div>
+
+                    <div class="recipe">
+
+                        ${
+                            dish.steps
+                            ? dish.steps
+                                .map(step => `<p>${step}</p>`)
+                                .join("")
+                            : "<p>Рецепт скоро будет добавлен ❤️</p>"
+                        }
+
+                    </div>
+
+                    <button class="cook-btn">
+
+                        ❤️ Готовим сегодня
+
+                    </button>
+
+                </div>
+
             </div>
+
         `;
 
-        const button = card.querySelector(".choose-btn");
+const viewButton = card.querySelector(".view-btn");
+const cookButton = card.querySelector(".cook-btn");
 
-button.addEventListener("click", () => {
+viewButton.addEventListener("click", () => {
+
+    card.classList.add("flipped");
+
+});
+
+cookButton.addEventListener("click", () => {
 
     document.querySelectorAll(".dish-card").forEach(c => {
+
         c.classList.remove("selected");
+
     });
 
     card.classList.add("selected");
@@ -47,16 +115,15 @@ button.addEventListener("click", () => {
     selectedDish = dish;
 
     sendButton.disabled = false;
+
     sendButton.textContent = "❤️ Отправить выбор";
 
 });
 
-        container.appendChild(card);
-
+container.appendChild(card);
     });
 
 }
-
 refreshButton.addEventListener("click", renderDishes);
 
 renderDishes();
